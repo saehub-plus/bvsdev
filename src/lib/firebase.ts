@@ -193,4 +193,5 @@ export const deleteImage = async (path: string): Promise<void> => {
 };
 
 // Auth state hook
-export { auth, db, storage, onAuthStateChanged, User };
+export { auth, db, storage, onAuthStateChanged };
+export type { User };

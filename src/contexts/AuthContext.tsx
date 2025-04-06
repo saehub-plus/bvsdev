@@ -41,15 +41,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return unsubscribe;
   }, []);
   
-  const login = async () => {
+  const login = async (): Promise<void> => {
     try {
-      const user = await signInWithGoogle();
+      await signInWithGoogle();
       toast({
         title: "Autenticação bem-sucedida",
         description: "Você está conectado à matriz principal.",
         variant: "default",
       });
-      return user;
     } catch (error) {
       toast({
         title: "Falha na autenticação",
