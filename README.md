@@ -1,73 +1,137 @@
-# Welcome to your Lovable project
 
-## Project info
+<div align="center">
+  <h1><span style="color:#39FF14;">&lt;BVS/&gt;</span> Developments</h1>
+  <p>Portfolio de Desenvolvimento Sci-Fi</p>
+  <hr>
+</div>
 
-**URL**: https://lovable.dev/projects/7d181298-5e38-497c-adbb-d3e8dede421b
+# 🧠 BVS Development Portfolio
 
-## How can I edit this code?
+Este repositório contém o projeto de portfólio de desenvolvimento com temática sci-fi/cyberpunk de Bruno Vinícius Silva, enfermeiro e desenvolvedor web.
 
-There are several ways of editing your application.
+![BVS Dev Banner](https://firebasestorage.googleapis.com/v0/b/projetos-bruno-1d53d.appspot.com/o/screenshots%2Fbanner-bvs.png?alt=media)
 
-**Use Lovable**
+## ✨ Funcionalidades
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/7d181298-5e38-497c-adbb-d3e8dede421b) and start prompting.
+- 📱 Design responsivo com tema futurista/Matrix
+- 🔒 Autenticação com Firebase (e-mail/senha)
+- 🛡️ Sistema de segurança "Modo Invasão Hacker" na tela de login
+- 📂 Gerenciamento completo de projetos
+- 🖼️ Upload e gestão de imagens
+- 📊 Visualização detalhada de projetos
+- 🎭 Animações fluidas e efeitos visuais de alta qualidade
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Tecnologias Utilizadas
 
-**Use your preferred IDE**
+- **Frontend**
+  - React + TypeScript
+  - Tailwind CSS (com estilo cyberpunk personalizado)
+  - Animações personalizadas
+  - shadcn-ui para componentes
+  - Lucide Icons para ícones
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Backend / Infraestrutura**
+  - Firebase Authentication
+  - Firebase Firestore Database
+  - Firebase Storage
+  - Firebase Hosting
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 💻 Como Rodar Localmente
 
-Follow these steps:
+1. Clone o repositório
+   ```bash
+   git clone <URL_DO_REPOSITÓRIO>
+   cd bvs-portfolio
+   ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+2. Instale as dependências
+   ```bash
+   npm install
+   ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+3. Inicie o servidor de desenvolvimento
+   ```bash
+   npm run dev
+   ```
 
-# Step 3: Install the necessary dependencies.
-npm i
+4. Acesse `http://localhost:5173` em seu navegador
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 🔐 Área Administrativa
+
+O projeto possui uma área administrativa para gerenciar projetos, acessível em `/admin`. É necessário autenticação para acessar.
+
+### Configuração do Firebase Auth:
+
+1. Crie um usuário com e-mail e senha no Firebase Auth
+2. Use essas credenciais para acessar a área administrativa
+3. Em caso de erro de autenticação com e-mail não registrado, o sistema ativará o "Modo Invasão Hacker" como medida de segurança
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+│
+├── components/        # Componentes reutilizáveis
+│   ├── ui/            # Componentes base (shadcn-ui)
+│   ├── Layout.tsx     # Layout principal da aplicação
+│   └── ...            # Outros componentes
+│
+├── contexts/          # Contextos React
+│   └── AuthContext.tsx # Contexto de autenticação
+│
+├── lib/               # Utilitários e configurações
+│   ├── firebase.ts    # Configuração e funções do Firebase
+│   └── utils.ts       # Funções utilitárias
+│
+├── pages/             # Páginas da aplicação
+│   ├── Index.tsx      # Página inicial
+│   ├── LoginPage.tsx  # Página de login com modo hacker
+│   ├── AdminPage.tsx  # Painel administrativo
+│   └── ...            # Outras páginas
+│
+├── hooks/             # Hooks personalizados
+│   └── use-toast.ts   # Hook para notificações
+│
+└── App.tsx            # Componente principal e rotas
 ```
 
-**Edit a file directly in GitHub**
+## 🧩 Recursos Adicionais
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. **Efeitos visuais personalizados**
+   - Efeito de escaneamento na imagem de perfil
+   - Animações de neon e glitch
+   - Ícones das redes sociais flutuantes
 
-**Use GitHub Codespaces**
+2. **Sistema de proteção contra intrusão**
+   - Ativação do modo de alerta em caso de tentativas de login inválidas
+   - Feedback visual e animações para diferentes estados de autenticação
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+3. **Gerenciamento completo de projetos**
+   - Criação, edição e exclusão de projetos
+   - Upload de múltiplas imagens por projeto
+   - Organização por páginas e tecnologias
 
-## What technologies are used for this project?
+## 🌐 Demo Online
 
-This project is built with:
+O projeto está disponível online em:
+[https://bvsdev.web.app](https://bvsdev.web.app)
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🙌 Créditos
 
-## How can I deploy this project?
+© 2025 BVS Developments - Bruno Vinicius Silva
 
-Simply open [Lovable](https://lovable.dev/projects/7d181298-5e38-497c-adbb-d3e8dede421b) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+<div align="center">
+  <p>
+    <a href="https://github.com/bruvini" target="_blank">
+      <img src="https://img.shields.io/badge/GitHub-%23121011.svg?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
+    </a>
+    <a href="https://www.linkedin.com/in/enfbrunovinicius" target="_blank">
+      <img src="https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+    </a>
+    <a href="https://www.instagram.com/bruvini/" target="_blank">
+      <img src="https://img.shields.io/badge/Instagram-%23E4405F.svg?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram">
+    </a>
+  </p>
+</div>

@@ -1,151 +1,122 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&family=VT323&family=Fira+Code:wght@300;400;500;600;700&display=swap');
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 @layer base {
   :root {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 88%;
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
 
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 88%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
 
-    --popover: 0 0% 3%;
-    --popover-foreground: 0 0% 88%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
 
-    --primary: 142 100% 50%;
-    --primary-foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+ 
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
 
-    --secondary: 221 45% 11%;
-    --secondary-foreground: 0 0% 88%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --accent: 142 100% 50%;
-    --accent-foreground: 0 0% 0%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 142 100% 50%;
+    --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
-  }
-  
-  * {
-    @apply border-border selection:bg-neon-green/20 selection:text-neon-green;
-  }
-  
-  body {
-    @apply bg-cyber-black text-foreground font-mono antialiased;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-    overflow-x: hidden;
+
+    /* Custom cyberpunk theme colors */
+    --cyber-black: #030307;
+    --cyber-dark: #05050c;
+    --neon-green: #39FF14;
+    --foreground: #f0f0f0;
   }
 
-  ::-webkit-scrollbar {
-    @apply w-2;
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+ 
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+ 
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+ 
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+ 
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+ 
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+ 
+    --secondary: 215.9 39.3% 11%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --accent: 215.9 39.3% 11%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 217.2 32.6% 17.5%;
+ 
+    --radius: 0.5rem;
   }
+}
 
-  ::-webkit-scrollbar-track {
-    @apply bg-cyber-dark;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    @apply bg-neon-green/50 rounded-full hover:bg-neon-green/80 transition-colors;
+@layer utilities {
+  .bg-tech-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg width='42' height='42' viewBox='0 0 42 42' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M42 21C42 32.598 32.598 42 21 42C9.40202 42 0 32.598 0 21C0 9.40202 9.40202 0 21 0C32.598 0 42 9.40202 42 21Z' fill='%230A0A14'/%3E%3Cpath d='M21 31C26.5228 31 31 26.5228 31 21C31 15.4772 26.5228 11 21 11C15.4772 11 11 15.4772 11 21C11 26.5228 15.4772 31 21 31Z' fill='%2339FF14'/%3E%3C/svg%3E");
   }
 }
 
 @layer components {
-  .tech-container {
-    @apply relative bg-cyber-black border border-neon-green/30 rounded-md p-5 overflow-hidden;
-  }
-  
-  .tech-container::before {
-    content: "";
-    @apply absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neon-green to-transparent;
-  }
-
-  .tech-container::after {
-    content: "";
-    @apply absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neon-green to-transparent;
-  }
-
-  .terminal-text {
-    @apply font-mono text-neon-green whitespace-pre-wrap border-r-2 border-neon-green overflow-hidden;
-  }
-
-  .neon-border {
-    @apply border border-neon-green/30 shadow-[0_0_5px_#00FF41,inset_0_0_5px_#00FF41];
-  }
-
   .cyber-button {
-    @apply relative px-6 py-2 font-mono text-neon-green border border-neon-green/50 
-    bg-transparent hover:bg-neon-green/10 transition-all duration-300
-    hover:shadow-[0_0_10px_#00FF41,inset_0_0_5px_#00FF41] overflow-hidden;
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-white bg-neon-green/20 hover:bg-neon-green/30 border border-neon-green/30 rounded transition-all duration-300 hover:shadow-neon relative overflow-hidden;
   }
   
-  .glitch-effect {
-    @apply hover:animate-glitch relative;
-  }
-  
-  .glitch-effect::before,
-  .glitch-effect::after {
-    content: attr(data-text);
-    @apply absolute top-0 left-0 w-full h-full;
-  }
-  
-  .glitch-effect::before {
-    @apply text-neon-blue left-[2px] hidden;
-    animation: glitch 0.3s infinite;
-    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-  }
-  
-  .glitch-effect::after {
-    @apply text-neon-purple left-[-2px] hidden;
-    animation: glitch 0.3s infinite reverse;
-    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-  }
-  
-  .glitch-effect:hover::before,
-  .glitch-effect:hover::after {
-    @apply block;
+  .button-danger {
+    @apply bg-red-500/20 hover:bg-red-500/30 border-red-500/30 hover:shadow-red;
   }
 
-  .matrix-bg {
-    @apply relative bg-cyber-black;
+  .tech-container {
+    @apply bg-cyber-dark/80 border border-neon-green/20 rounded-lg px-4 py-6 md:p-6 hover:border-neon-green/40 transition-colors shadow-lg relative;
   }
-  
-  .matrix-bg::before {
-    content: "";
-    @apply absolute inset-0 bg-tech-pattern bg-[length:30px_30px] opacity-20 z-0;
+
+  .shadow-neon {
+    @apply shadow-[0_0_15px_rgba(57,255,20,0.3)];
   }
-  
-  /* Social media tooltip */
-  .tooltip {
-    @apply relative;
+
+  .shadow-red {
+    @apply shadow-[0_0_15px_rgba(255,57,20,0.3)];
   }
-  
-  .tooltip .tooltip-text {
-    @apply absolute invisible opacity-0 bg-cyber-black/90 text-neon-green text-xs py-1 px-3 rounded border border-neon-green/30
-    w-auto whitespace-nowrap left-1/2 -translate-x-1/2 -bottom-8 transition-all duration-300 z-50;
+
+  .text-glow {
+    @apply drop-shadow-[0_0_8px_rgba(57,255,20,0.8)];
   }
-  
-  .tooltip:hover .tooltip-text {
-    @apply visible opacity-100;
+
+  .text-glow-red {
+    @apply drop-shadow-[0_0_8px_rgba(255,57,20,0.8)];
   }
-  
-  /* Glitch text for hacker mode */
+
+  /* Glitch effect for hacker mode */
   .glitch-text {
     position: relative;
-    animation: glitch-text 2.5s infinite;
+    animation: glitch 1s infinite;
   }
-  
+
   .glitch-text::before,
   .glitch-text::after {
     content: attr(data-text);
@@ -155,268 +126,120 @@
     width: 100%;
     height: 100%;
   }
-  
+
   .glitch-text::before {
     left: 2px;
-    text-shadow: -1px 0 #ff0000;
+    text-shadow: -2px 0 #ff073a;
     clip: rect(44px, 450px, 56px, 0);
     animation: glitch-anim 5s infinite linear alternate-reverse;
   }
-  
+
   .glitch-text::after {
     left: -2px;
-    text-shadow: -1px 0 #ff0000;
-    clip: rect(44px, 450px, 56px, 0);
-    animation: glitch-anim2 5s infinite linear alternate-reverse;
+    text-shadow: -2px 0 #00fff9, 2px 2px #ff073a;
+    animation: glitch-anim2 1s infinite linear alternate-reverse;
   }
 }
 
-.hero-title {
-  text-shadow: 0 0 10px rgba(0, 255, 65, 0.7);
-}
-
-.text-glow {
-  text-shadow: 0 0 5px rgba(0, 255, 65, 0.7);
-}
-
-.hero-content-wrapper h1 {
-  font-size: clamp(2rem, 8vw, 5rem);
-}
-
-.hero-content-wrapper h2 {
-  font-size: clamp(1rem, 4vw, 1.5rem);
-}
-
-.project-card-container {
-  perspective: 1000px;
-}
-
-.project-card {
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.project-card:hover {
-  transform: rotateY(5deg) translateZ(10px);
-}
-
-/* Scanner effect animation */
-@keyframes scan {
-  0% {
-    top: -10%;
-    opacity: 0;
-  }
-  10% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    top: 110%;
-    opacity: 0;
-  }
-}
-
-/* Float animation for social icons */
-@keyframes float {
-  0% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(5deg);
-  }
-  100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-}
-
-.social-links a {
-  animation: float 5s ease-in-out infinite;
-}
-
-.social-links a:nth-child(2) {
-  animation-delay: 1s;
-}
-
-.social-links a:nth-child(3) {
-  animation-delay: 2s;
-}
-
-/* Glitch animations for hacker mode */
 @keyframes glitch {
   0% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(-2px, -2px);
-  }
-  60% {
-    transform: translate(2px, 2px);
-  }
-  80% {
-    transform: translate(2px, -2px);
-  }
-  100% {
-    transform: translate(0);
-  }
-}
-
-@keyframes glitch-text {
-  0% {
-    text-shadow: 0.05em 0 0 #ff0000, -0.05em -0.025em 0 #00ffff;
+    text-shadow: 0.05em 0 0 #ff073a, -0.05em -0.025em 0 #00fff9,
+      -0.025em 0.05em 0 #ff073a;
   }
   14% {
-    text-shadow: 0.05em 0 0 #ff0000, -0.05em -0.025em 0 #00ffff;
+    text-shadow: 0.05em 0 0 #ff073a, -0.05em -0.025em 0 #00fff9,
+      -0.025em 0.05em 0 #ff073a;
   }
   15% {
-    text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.025em 0 #00ffff;
+    text-shadow: -0.05em -0.025em 0 #ff073a, 0.025em 0.025em 0 #00fff9,
+      -0.05em -0.05em 0 #ff073a;
   }
   49% {
-    text-shadow: -0.05em -0.025em 0 #ff0000, 0.025em 0.025em 0 #00ffff;
+    text-shadow: -0.05em -0.025em 0 #ff073a, 0.025em 0.025em 0 #00fff9,
+      -0.05em -0.05em 0 #ff073a;
   }
   50% {
-    text-shadow: 0.025em 0.05em 0 #ff0000, 0.05em 0 0 #00ffff;
+    text-shadow: 0.025em 0.05em 0 #ff073a, 0.05em 0 0 #00fff9,
+      0 -0.05em 0 #ff073a;
   }
   99% {
-    text-shadow: 0.025em 0.05em 0 #ff0000, 0.05em 0 0 #00ffff;
+    text-shadow: 0.025em 0.05em 0 #ff073a, 0.05em 0 0 #00fff9,
+      0 -0.05em 0 #ff073a;
   }
   100% {
-    text-shadow: -0.025em 0 0 #ff0000, -0.025em -0.025em 0 #00ffff;
+    text-shadow: -0.025em 0 0 #ff073a, -0.025em -0.025em 0 #00fff9,
+      -0.025em -0.05em 0 #ff073a;
   }
 }
 
 @keyframes glitch-anim {
   0% {
-    clip: rect(16px, 9999px, 64px, 0);
-  }
-  5% {
-    clip: rect(65px, 9999px, 27px, 0);
+    clip: rect(78px, 9999px, 40px, 0);
   }
   10% {
-    clip: rect(89px, 9999px, 99px, 0);
-  }
-  15% {
-    clip: rect(99px, 9999px, 14px, 0);
+    clip: rect(27px, 9999px, 91px, 0);
   }
   20% {
-    clip: rect(11px, 9999px, 35px, 0);
-  }
-  25% {
-    clip: rect(60px, 9999px, 32px, 0);
+    clip: rect(84px, 9999px, 59px, 0);
   }
   30% {
-    clip: rect(33px, 9999px, 35px, 0);
-  }
-  35% {
-    clip: rect(70px, 9999px, 24px, 0);
+    clip: rect(75px, 9999px, 67px, 0);
   }
   40% {
-    clip: rect(51px, 9999px, 98px, 0);
-  }
-  45% {
-    clip: rect(40px, 9999px, 31px, 0);
+    clip: rect(89px, 9999px, 93px, 0);
   }
   50% {
-    clip: rect(7px, 9999px, 19px, 0);
-  }
-  55% {
-    clip: rect(37px, 9999px, 92px, 0);
+    clip: rect(20px, 9999px, 78px, 0);
   }
   60% {
-    clip: rect(39px, 9999px, 18px, 0);
-  }
-  65% {
-    clip: rect(75px, 9999px, 22px, 0);
+    clip: rect(18px, 9999px, 82px, 0);
   }
   70% {
-    clip: rect(87px, 9999px, 90px, 0);
-  }
-  75% {
-    clip: rect(95px, 9999px, 24px, 0);
+    clip: rect(94px, 9999px, 46px, 0);
   }
   80% {
-    clip: rect(52px, 9999px, 67px, 0);
-  }
-  85% {
-    clip: rect(23px, 9999px, 74px, 0);
+    clip: rect(31px, 9999px, 84px, 0);
   }
   90% {
-    clip: rect(45px, 9999px, 11px, 0);
-  }
-  95% {
-    clip: rect(35px, 9999px, 43px, 0);
+    clip: rect(40px, 9999px, 73px, 0);
   }
   100% {
-    clip: rect(48px, 9999px, 99px, 0);
+    clip: rect(82px, 9999px, 64px, 0);
   }
 }
 
 @keyframes glitch-anim2 {
   0% {
-    clip: rect(67px, 9999px, 11px, 0);
-  }
-  5% {
-    clip: rect(44px, 9999px, 31px, 0);
+    clip: rect(26px, 9999px, 29px, 0);
   }
   10% {
-    clip: rect(2px, 9999px, 11px, 0);
-  }
-  15% {
-    clip: rect(35px, 9999px, 42px, 0);
+    clip: rect(67px, 9999px, 16px, 0);
   }
   20% {
-    clip: rect(8px, 9999px, 61px, 0);
-  }
-  25% {
-    clip: rect(12px, 9999px, 75px, 0);
+    clip: rect(84px, 9999px, 38px, 0);
   }
   30% {
-    clip: rect(76px, 9999px, 88px, 0);
-  }
-  35% {
-    clip: rect(21px, 9999px, 64px, 0);
+    clip: rect(11px, 9999px, 21px, 0);
   }
   40% {
-    clip: rect(89px, 9999px, 33px, 0);
-  }
-  45% {
-    clip: rect(69px, 9999px, 68px, 0);
+    clip: rect(10px, 9999px, 89px, 0);
   }
   50% {
-    clip: rect(10px, 9999px, 94px, 0);
-  }
-  55% {
-    clip: rect(67px, 9999px, 57px, 0);
+    clip: rect(11px, 9999px, 24px, 0);
   }
   60% {
-    clip: rect(63px, 9999px, 67px, 0);
-  }
-  65% {
-    clip: rect(35px, 9999px, 52px, 0);
+    clip: rect(14px, 9999px, 53px, 0);
   }
   70% {
-    clip: rect(96px, 9999px, 5px, 0);
-  }
-  75% {
-    clip: rect(65px, 9999px, 100px, 0);
+    clip: rect(60px, 9999px, 30px, 0);
   }
   80% {
-    clip: rect(28px, 9999px, 57px, 0);
-  }
-  85% {
-    clip: rect(29px, 9999px, 93px, 0);
+    clip: rect(17px, 9999px, 43px, 0);
   }
   90% {
-    clip: rect(6px, 9999px, 38px, 0);
-  }
-  95% {
-    clip: rect(99px, 9999px, 97px, 0);
+    clip: rect(5px, 9999px, 84px, 0);
   }
   100% {
-    clip: rect(34px, 9999px, 36px, 0);
+    clip: rect(82px, 9999px, 97px, 0);
   }
 }

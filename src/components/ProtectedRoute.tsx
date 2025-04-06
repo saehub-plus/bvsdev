@@ -8,6 +8,11 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
+/**
+ * ProtectedRoute component
+ * Ensures that routes are only accessible to authenticated users
+ * Redirects to login if user is not authenticated
+ */
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { currentUser, loading } = useAuth();
   

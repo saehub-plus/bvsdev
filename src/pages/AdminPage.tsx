@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import Layout from "../components/Layout";
 import { useToast } from "@/hooks/use-toast";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import {
   Project,
   ProjectPage,
@@ -10,6 +12,7 @@ import {
   updateProject,
   deleteProject,
   uploadImage,
+  deleteImage,
 } from "../lib/firebase";
 import {
   PlusCircle,
@@ -24,6 +27,7 @@ import {
   Calendar,
   Link as LinkIcon,
   Code,
+  AlertTriangle,
 } from "lucide-react";
 
 const AdminPage: React.FC = () => {
@@ -46,6 +50,8 @@ const AdminPage: React.FC = () => {
   const [projectImageFile, setProjectImageFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const projectImageRef = useRef<HTMLInputElement>(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
 
   // Fetch projects on mount
   useEffect(() => {
@@ -125,10 +131,12 @@ const AdminPage: React.FC = () => {
     if (projectImageRef.current) {
       projectImageRef.current.value = "";
     }
+    setCurrentProject(null);
   };
 
   const handleCancelAddProject = () => {
     setIsAddingProject(false);
+    setIsEditingProject(false);
     resetForm();
   };
 
@@ -145,7 +153,7 @@ const AdminPage: React.FC = () => {
 
     try {
       setSubmitting(true);
-      let imageUrl = "";
+      let imageUrl = formData.imageUrl || "";
 
       // Upload project image if exists
       if (projectImageFile) {
@@ -162,33 +170,42 @@ const AdminPage: React.FC = () => {
             const { imageFile, ...rest } = page;
             return { ...rest, imageUrl: pageImageUrl };
           }
-          return page; 
+          return page;
         })
       );
 
-      // Create the project with all data
+      // Create or update the project with all data
       const projectToSave = {
         ...formData,
         imageUrl,
         pages: pagesWithImages,
       };
 
-      await addProject(projectToSave);
-
-      toast({
-        title: "Projeto adicionado com sucesso",
-        description: "A matriz de projetos foi atualizada.",
-        variant: "default",
-      });
+      if (isEditingProject && currentProject?.id) {
+        await updateProject(currentProject.id, projectToSave);
+        toast({
+          title: "Projeto atualizado com sucesso",
+          description: "As alterações foram salvas na matriz de projetos.",
+          variant: "default",
+        });
+      } else {
+        await addProject(projectToSave);
+        toast({
+          title: "Projeto adicionado com sucesso",
+          description: "A matriz de projetos foi atualizada.",
+          variant: "default",
+        });
+      }
 
       // Reset form and fetch updated projects
       resetForm();
       setIsAddingProject(false);
+      setIsEditingProject(false);
       fetchProjects();
     } catch (error) {
-      console.error("Error adding project:", error);
+      console.error("Error saving project:", error);
       toast({
-        title: "Erro ao adicionar projeto",
+        title: isEditingProject ? "Erro ao atualizar projeto" : "Erro ao adicionar projeto",
         description: "Não foi possível salvar o projeto. Tente novamente.",
         variant: "destructive",
       });
@@ -321,6 +338,91 @@ const AdminPage: React.FC = () => {
     });
   };
 
+  // New function to handle edit project
+  const handleEditProject = (project: Project) => {
+    setCurrentProject(project);
+    setFormData({
+      ...project,
+      date: typeof project.date === 'string' 
+        ? project.date 
+        : project.date instanceof Date 
+          ? project.date.toISOString().split('T')[0] 
+          : new Date().toISOString().split('T')[0],
+    });
+    setIsEditingProject(true);
+    setIsAddingProject(false);
+  };
+
+  // New function to handle delete project
+  const confirmDeleteProject = (projectId: string) => {
+    setProjectToDelete(projectId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteProject = async () => {
+    if (!projectToDelete) return;
+    
+    try {
+      setSubmitting(true);
+      
+      // Find the project to get image URLs for deletion
+      const projectToRemove = projects.find(p => p.id === projectToDelete);
+      
+      if (projectToRemove) {
+        // Delete project image if exists
+        if (projectToRemove.imageUrl) {
+          const imageRef = projectToRemove.imageUrl.split('?')[0].split('/').pop();
+          if (imageRef) {
+            try {
+              await deleteImage(`projects/${imageRef}`);
+            } catch (error) {
+              console.error("Error deleting project image:", error);
+            }
+          }
+        }
+        
+        // Delete page images if exist
+        if (projectToRemove.pages && projectToRemove.pages.length > 0) {
+          for (const page of projectToRemove.pages) {
+            if (page.imageUrl) {
+              const pageImageRef = page.imageUrl.split('?')[0].split('/').pop();
+              if (pageImageRef) {
+                try {
+                  await deleteImage(`pages/${pageImageRef}`);
+                } catch (error) {
+                  console.error("Error deleting page image:", error);
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      // Delete the project document
+      await deleteProject(projectToDelete);
+      
+      toast({
+        title: "Projeto excluído com sucesso",
+        description: "O projeto foi removido permanentemente.",
+        variant: "default",
+      });
+      
+      // Refresh the projects list
+      fetchProjects();
+    } catch (error) {
+      console.error("Error deleting project:", error);
+      toast({
+        title: "Erro ao excluir projeto",
+        description: "Não foi possível remover o projeto. Tente novamente.",
+        variant: "destructive",
+      });
+    } finally {
+      setSubmitting(false);
+      setIsDeleteDialogOpen(false);
+      setProjectToDelete(null);
+    }
+  };
+
   // Helper function to format date for display
   const formatDate = (dateValue: string | Date) => {
     if (typeof dateValue === "string") {
@@ -359,6 +461,7 @@ const AdminPage: React.FC = () => {
                   onClick={() => {
                     setIsAddingProject(true);
                     setIsEditingProject(false);
+                    resetForm();
                   }}
                   className="cyber-button !py-1 !px-3 flex items-center gap-1 text-sm"
                   disabled={isAddingProject || isEditingProject}
@@ -373,10 +476,10 @@ const AdminPage: React.FC = () => {
               <div className="py-10 flex justify-center">
                 <Loader2 className="w-10 h-10 text-neon-green animate-spin" />
               </div>
-            ) : isAddingProject ? (
+            ) : isAddingProject || isEditingProject ? (
               <div className="animate-fade-in">
                 <h2 className="text-xl font-display text-neon-green mb-4">
-                  Adicionar Novo Projeto
+                  {isEditingProject ? "Editar Projeto" : "Adicionar Novo Projeto"}
                 </h2>
                 <form onSubmit={handleAddProject}>
                   <div className="space-y-6">
@@ -413,7 +516,9 @@ const AdminPage: React.FC = () => {
                           value={
                             typeof formData.date === "string"
                               ? formData.date
-                              : formData.date.toISOString().split("T")[0]
+                              : formData.date instanceof Date
+                                ? formData.date.toISOString().split("T")[0]
+                                : new Date().toISOString().split("T")[0]
                           }
                           onChange={handleInputChange}
                           className="w-full bg-cyber-black border border-neon-green/30 rounded p-3 text-foreground font-mono"
@@ -451,7 +556,7 @@ const AdminPage: React.FC = () => {
                         <input
                           id="link"
                           name="link"
-                          value={formData.link}
+                          value={formData.link || ""}
                           onChange={handleInputChange}
                           className="w-full bg-cyber-black border border-neon-green/30 rounded p-3 text-foreground font-mono"
                           placeholder="https://exemplo.com"
@@ -463,8 +568,14 @@ const AdminPage: React.FC = () => {
                           htmlFor="projectImage"
                           className="block text-foreground/80 mb-2 font-mono"
                         >
-                          Imagem do Projeto
+                          {isEditingProject && formData.imageUrl ? "Substituir Imagem do Projeto" : "Imagem do Projeto"}
                         </label>
+                        {isEditingProject && formData.imageUrl && (
+                          <div className="mb-2 flex items-center">
+                            <img src={formData.imageUrl} alt={formData.title} className="h-16 border border-neon-green/20 rounded mr-2" />
+                            <span className="text-xs text-foreground/70">Imagem atual</span>
+                          </div>
+                        )}
                         <input
                           type="file"
                           id="projectImage"
@@ -780,7 +891,7 @@ const AdminPage: React.FC = () => {
                       ) : (
                         <div className="flex items-center gap-2">
                           <Save size={16} />
-                          Salvar Projeto
+                          {isEditingProject ? "Atualizar Projeto" : "Salvar Projeto"}
                         </div>
                       )}
                     </button>
@@ -812,9 +923,27 @@ const AdminPage: React.FC = () => {
                           <div
                             className={project.imageUrl ? "md:w-3/4" : "w-full"}
                           >
-                            <h3 className="text-neon-green font-display text-xl mb-2">
-                              {project.title}
-                            </h3>
+                            <div className="flex justify-between items-start mb-2">
+                              <h3 className="text-neon-green font-display text-xl">
+                                {project.title}
+                              </h3>
+                              <div className="flex space-x-2">
+                                <button
+                                  onClick={() => handleEditProject(project)}
+                                  className="text-neon-green/70 hover:text-neon-green transition-colors p-1"
+                                  title="Editar projeto"
+                                >
+                                  <Edit size={18} />
+                                </button>
+                                <button
+                                  onClick={() => confirmDeleteProject(project.id || '')}
+                                  className="text-foreground/60 hover:text-red-500 transition-colors p-1"
+                                  title="Excluir projeto"
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              </div>
+                            </div>
 
                             <div className="flex flex-wrap gap-4 text-xs text-foreground/60 mb-3">
                               <div className="flex items-center">
@@ -878,8 +1007,47 @@ const AdminPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent className="bg-cyber-dark border border-neon-green/30">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-neon-green font-display">Confirmar Exclusão</AlertDialogTitle>
+            <AlertDialogDescription className="text-foreground/70">
+              Esta ação irá excluir permanentemente o projeto e todas as suas imagens.
+              Essa operação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex gap-2 mt-4">
+            <AlertDialogCancel 
+              className="border border-neon-green/30 bg-transparent hover:bg-neon-green/10 text-foreground"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
+              Cancelar
+            </AlertDialogCancel>
+            <AlertDialogAction 
+              className="bg-red-900/40 hover:bg-red-800/60 border border-red-500/50 text-red-200"
+              onClick={handleDeleteProject}
+              disabled={submitting}
+            >
+              {submitting ? (
+                <div className="flex items-center gap-2">
+                  <Loader2 size={14} className="animate-spin" />
+                  Excluindo...
+                </div>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Trash2 size={14} />
+                  Excluir
+                </div>
+              )}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </Layout>
   );
 };
 
 export default AdminPage;
+
