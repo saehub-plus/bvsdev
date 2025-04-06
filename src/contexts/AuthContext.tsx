@@ -1,15 +1,19 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth, User, onAuthStateChanged, signInWithGoogle, signOut } from '../lib/firebase';
+import { auth, User, onAuthStateChanged, signInWithEmail, signOut, AuthError } from '../lib/firebase';
 import { useToast } from "@/hooks/use-toast";
 
 interface AuthContextType {
   currentUser: User | null;
   loading: boolean;
-  login: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
+  authError: string | null;
+  setAuthError: (error: string | null) => void;
+  isHackerMode: boolean;
+  setIsHackerMode: (mode: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -18,6 +22,10 @@ const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   logout: async () => {},
   isAuthenticated: false,
+  authError: null,
+  setAuthError: () => {},
+  isHackerMode: false,
+  setIsHackerMode: () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -29,6 +37,8 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isHackerMode, setIsHackerMode] = useState<boolean>(false);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -41,20 +51,41 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return unsubscribe;
   }, []);
   
-  const login = async (): Promise<void> => {
+  const login = async (email: string, password: string): Promise<void> => {
     try {
-      await signInWithGoogle();
+      await signInWithEmail(email, password);
+      setAuthError(null);
       toast({
         title: "Autenticação bem-sucedida",
         description: "Você está conectado à matriz principal.",
         variant: "default",
       });
     } catch (error) {
-      toast({
-        title: "Falha na autenticação",
-        description: "Não foi possível conectar-se à matriz. Tente novamente.",
-        variant: "destructive",
-      });
+      const authError = error as AuthError;
+      
+      if (authError.code === 'auth/user-not-found') {
+        setIsHackerMode(true);
+        setAuthError("ALERTA: TENTATIVA DE ACESSO NÃO AUTORIZADA DETECTADA!");
+        toast({
+          title: "ALERTA DE SEGURANÇA",
+          description: "Usuário não autorizado detectado! Sistema de proteção ativado.",
+          variant: "destructive",
+        });
+      } else if (authError.code === 'auth/wrong-password') {
+        setAuthError("Senha incorreta. Tente novamente.");
+        toast({
+          title: "Falha na autenticação",
+          description: "Senha incorreta. Tente novamente.",
+          variant: "destructive",
+        });
+      } else {
+        setAuthError("Erro ao autenticar. Tente novamente.");
+        toast({
+          title: "Falha na autenticação",
+          description: "Não foi possível conectar-se à matriz. Tente novamente.",
+          variant: "destructive",
+        });
+      }
       throw error;
     }
   };
@@ -84,6 +115,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     login,
     logout,
     isAuthenticated: !!currentUser,
+    authError,
+    setAuthError,
+    isHackerMode,
+    setIsHackerMode,
   };
   
   return (

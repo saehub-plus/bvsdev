@@ -3,12 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { 
   getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
+  signInWithEmailAndPassword,
   signOut as firebaseSignOut, 
   onAuthStateChanged, 
-  User 
+  AuthError
 } from "firebase/auth";
+import type { User } from "firebase/auth";
 import { 
   getFirestore, 
   collection, 
@@ -48,7 +48,6 @@ const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-const googleProvider = new GoogleAuthProvider();
 
 // Project type definitions
 export interface ProjectPage {
@@ -72,17 +71,17 @@ export interface Project {
 }
 
 // Authentication functions
-export const signInWithGoogle = async () => {
+export const signInWithEmail = async (email: string, password: string): Promise<User> => {
   try {
-    const result = await signInWithPopup(auth, googleProvider);
+    const result = await signInWithEmailAndPassword(auth, email, password);
     return result.user;
   } catch (error) {
-    console.error("Error signing in with Google: ", error);
+    console.error("Error signing in with email: ", error);
     throw error;
   }
 };
 
-export const signOut = async () => {
+export const signOut = async (): Promise<void> => {
   try {
     await firebaseSignOut(auth);
   } catch (error) {
@@ -194,4 +193,4 @@ export const deleteImage = async (path: string): Promise<void> => {
 
 // Auth state hook
 export { auth, db, storage, onAuthStateChanged };
-export type { User };
+export type { User, AuthError };

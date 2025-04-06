@@ -35,14 +35,14 @@ const AboutSection: React.FC = () => {
                 />
               </div>
               
-              {/* Social media icons */}
-              <div className="social-links absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              {/* Social media icons - now always visible */}
+              <div className="social-links absolute inset-0 flex items-center justify-center opacity-100 transition-opacity duration-500">
                 <div className="relative w-full h-full">
                   <a 
                     href="https://github.com/bruvini" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="absolute top-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    className="absolute top-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip hover:scale-110"
                     data-tooltip="GitHub"
                   >
                     <Github className="w-6 h-6 text-neon-green" />
@@ -53,7 +53,7 @@ const AboutSection: React.FC = () => {
                     href="https://www.instagram.com/bruvini/" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="absolute top-1/2 -right-5 -translate-y-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    className="absolute top-1/2 -right-5 -translate-y-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip hover:scale-110"
                     data-tooltip="Instagram"
                   >
                     <Instagram className="w-6 h-6 text-neon-green" />
@@ -64,7 +64,7 @@ const AboutSection: React.FC = () => {
                     href="https://www.linkedin.com/in/enfbrunovinicius" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip hover:scale-110"
                     data-tooltip="LinkedIn"
                   >
                     <Linkedin className="w-6 h-6 text-neon-green" />
