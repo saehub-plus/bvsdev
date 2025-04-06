@@ -55,7 +55,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await signInWithEmail(email, password);
       setAuthError(null);
-      setIsHackerMode(false); // Reset hacker mode on successful login
       toast({
         title: "Autenticação bem-sucedida",
         description: "Você está conectado à matriz principal.",
@@ -128,4 +127,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
