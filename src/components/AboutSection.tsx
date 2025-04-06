@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Code, Zap, Monitor } from 'lucide-react';
+import { Code, Zap, Monitor, Github, Instagram, Linkedin } from 'lucide-react';
 
 const AboutSection: React.FC = () => {
   return (
@@ -16,15 +16,62 @@ const AboutSection: React.FC = () => {
         
         <div className="flex flex-col md:flex-row gap-10 items-center">
           <div className="md:w-1/3 flex justify-center">
-            <div className="relative">
-              <div className="w-64 h-64 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_15px_rgba(0,255,65,0.3)]">
+            <div className="relative group">
+              {/* Animated scanner effect */}
+              <div className="absolute inset-0 overflow-hidden rounded-full z-10 pointer-events-none">
+                <div className="absolute left-0 top-0 w-full h-5 bg-gradient-to-b from-neon-green/20 to-transparent animate-[scan_3s_ease-in-out_infinite]"></div>
+              </div>
+              
+              {/* Pulsing glow ring */}
+              <div className="absolute -inset-2 rounded-full border-2 border-neon-green/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute -inset-1 rounded-full border border-neon-green/30 animate-pulse-neon"></div>
+              
+              {/* Main image container */}
+              <div className="w-72 h-72 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_25px_rgba(0,255,65,0.4)] transition-all duration-500 group-hover:shadow-[0_0_40px_rgba(0,255,65,0.6)]">
                 <img 
                   src="/lovable-uploads/40b0c7cb-4325-4b11-81e7-a8f74ffd9221.png" 
                   alt="BVS Developer" 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover scale-105 group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <div className="absolute -inset-1 rounded-full border border-neon-green/30 animate-pulse-neon"></div>
+              
+              {/* Social media icons */}
+              <div className="social-links absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div className="relative w-full h-full">
+                  <a 
+                    href="https://github.com/bruvini" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="absolute top-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    data-tooltip="GitHub"
+                  >
+                    <Github className="w-6 h-6 text-neon-green" />
+                    <span className="tooltip-text">GitHub</span>
+                  </a>
+                  
+                  <a 
+                    href="https://www.instagram.com/bruvini/" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="absolute top-1/2 -right-5 -translate-y-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    data-tooltip="Instagram"
+                  >
+                    <Instagram className="w-6 h-6 text-neon-green" />
+                    <span className="tooltip-text">Instagram</span>
+                  </a>
+                  
+                  <a 
+                    href="https://www.linkedin.com/in/enfbrunovinicius" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-cyber-black/80 p-2 rounded-full border border-neon-green/50 shadow-[0_0_10px_rgba(0,255,65,0.3)] hover:shadow-[0_0_15px_rgba(0,255,65,0.5)] transition-all duration-300 tooltip"
+                    data-tooltip="LinkedIn"
+                  >
+                    <Linkedin className="w-6 h-6 text-neon-green" />
+                    <span className="tooltip-text">LinkedIn</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
           

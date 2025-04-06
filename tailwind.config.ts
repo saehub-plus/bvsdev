@@ -113,6 +113,16 @@ export default {
         "pulse-neon": {
           "0%, 100%": { boxShadow: "0 0 15px #00FF41, 0 0 5px #00FF41" },
           "50%": { boxShadow: "0 0 25px #00FF41, 0 0 10px #00FF41" }
+        },
+        "scan": {
+          "0%": { top: "-10%", opacity: "0" },
+          "10%": { opacity: "1" },
+          "80%": { opacity: "1" },
+          "100%": { top: "110%", opacity: "0" }
+        },
+        "float": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" }
         }
       },
       animation: {
@@ -122,7 +132,9 @@ export default {
         glitch: "glitch 0.5s infinite",
         "fade-in": "fade-in 0.5s ease-out",
         "fade-out": "fade-out 0.5s ease-out",
-        "pulse-neon": "pulse-neon 2s infinite"
+        "pulse-neon": "pulse-neon 2s infinite",
+        "scan": "scan 3s ease-in-out infinite",
+        "float": "float 5s ease-in-out infinite"
       },
       backgroundImage: {
         'cyber-grid': "linear-gradient(rgba(0, 255, 65, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 255, 65, 0.1) 1px, transparent 1px)",

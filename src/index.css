@@ -125,6 +125,20 @@
     content: "";
     @apply absolute inset-0 bg-tech-pattern bg-[length:30px_30px] opacity-20 z-0;
   }
+  
+  /* Social media tooltip */
+  .tooltip {
+    @apply relative;
+  }
+  
+  .tooltip .tooltip-text {
+    @apply absolute invisible opacity-0 bg-cyber-black/90 text-neon-green text-xs py-1 px-3 rounded border border-neon-green/30
+    w-auto whitespace-nowrap left-1/2 -translate-x-1/2 -bottom-8 transition-all duration-300 z-50;
+  }
+  
+  .tooltip:hover .tooltip-text {
+    @apply visible opacity-100;
+  }
 }
 
 .hero-title {
@@ -154,4 +168,47 @@
 
 .project-card:hover {
   transform: rotateY(5deg) translateZ(10px);
+}
+
+/* Scanner effect animation */
+@keyframes scan {
+  0% {
+    top: -10%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%;
+    opacity: 0;
+  }
+}
+
+/* Float animation for social icons */
+@keyframes float {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(5deg);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.social-links a {
+  animation: float 5s ease-in-out infinite;
+}
+
+.social-links a:nth-child(2) {
+  animation-delay: 1s;
+}
+
+.social-links a:nth-child(3) {
+  animation-delay: 2s;
 }
