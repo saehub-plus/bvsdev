@@ -20,7 +20,9 @@ import {
   deleteDoc, 
   query, 
   orderBy, 
-  Timestamp 
+  Timestamp, 
+  DocumentData,
+  QueryDocumentSnapshot
 } from "firebase/firestore";
 import { 
   getStorage, 
@@ -48,26 +50,6 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const googleProvider = new GoogleAuthProvider();
 
-// Authentication functions
-export const signInWithGoogle = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    return result.user;
-  } catch (error) {
-    console.error("Error signing in with Google: ", error);
-    throw error;
-  }
-};
-
-export const signOut = async () => {
-  try {
-    await firebaseSignOut(auth);
-  } catch (error) {
-    console.error("Error signing out: ", error);
-    throw error;
-  }
-};
-
 // Project type definitions
 export interface ProjectPage {
   id?: string;
@@ -88,6 +70,26 @@ export interface Project {
   pages: ProjectPage[];
   createdAt?: Timestamp;
 }
+
+// Authentication functions
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    return result.user;
+  } catch (error) {
+    console.error("Error signing in with Google: ", error);
+    throw error;
+  }
+};
+
+export const signOut = async () => {
+  try {
+    await firebaseSignOut(auth);
+  } catch (error) {
+    console.error("Error signing out: ", error);
+    throw error;
+  }
+};
 
 // Firestore functions
 export const getProjects = async (): Promise<Project[]> => {

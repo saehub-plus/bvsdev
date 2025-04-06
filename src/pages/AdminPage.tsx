@@ -301,6 +301,14 @@ const AdminPage: React.FC = () => {
       variant: "default",
     });
   };
+
+  // Helper function to format date for display
+  const formatDate = (dateValue: string | Date) => {
+    if (typeof dateValue === 'string') {
+      return new Date(dateValue).toLocaleDateString();
+    }
+    return dateValue.toLocaleDateString();
+  };
   
   return (
     <Layout>
@@ -367,7 +375,7 @@ const AdminPage: React.FC = () => {
                           type="date"
                           id="date"
                           name="date"
-                          value={formData.date}
+                          value={typeof formData.date === 'string' ? formData.date : formData.date.toISOString().split('T')[0]}
                           onChange={handleInputChange}
                           className="w-full bg-cyber-black border border-neon-green/30 rounded p-3 text-foreground font-mono"
                           required
@@ -704,9 +712,7 @@ const AdminPage: React.FC = () => {
                             <div className="flex flex-wrap gap-4 text-xs text-foreground/60 mb-3">
                               <div className="flex items-center">
                                 <Calendar size={12} className="mr-1" />
-                                {new Date(
-                                  typeof project.date === 'string' ? project.date : project.date.toDate()
-                                ).toLocaleDateString()}
+                                {formatDate(project.date)}
                               </div>
                               
                               {project.link && (

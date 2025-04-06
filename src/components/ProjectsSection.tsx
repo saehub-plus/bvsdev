@@ -103,6 +103,14 @@ interface ProjectCardProps {
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
+  // Helper function to format the date
+  const formatDate = (dateValue: string | Date) => {
+    if (typeof dateValue === 'string') {
+      return new Date(dateValue).toLocaleDateString();
+    }
+    return dateValue.toLocaleDateString();
+  };
+
   return (
     <div className="project-card-container group" onClick={onClick}>
       <div className="project-card tech-container h-full flex flex-col cursor-pointer">
@@ -155,9 +163,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         <div className="mt-auto pt-3 border-t border-neon-green/20 flex justify-between items-center">
           <span className="text-xs text-foreground/50 font-mono flex items-center">
             <Calendar size={12} className="mr-1" />
-            {new Date(
-              typeof project.date === 'string' ? project.date : project.date.toDate()
-            ).toLocaleDateString()}
+            {formatDate(project.date)}
           </span>
           <button className="text-neon-green hover:text-glow text-sm font-mono">
             Ver detalhes
@@ -174,6 +180,14 @@ interface ProjectModalProps {
 }
 
 const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
+  // Helper function to format the date
+  const formatDate = (dateValue: string | Date) => {
+    if (typeof dateValue === 'string') {
+      return new Date(dateValue).toLocaleDateString();
+    }
+    return dateValue.toLocaleDateString();
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-cyber-black/90 backdrop-blur-sm animate-fade-in">
       <div 
@@ -213,9 +227,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
           <div className="flex items-center text-foreground/70">
             <Calendar size={16} className="mr-2 text-neon-green/70" />
             <span>
-              {new Date(
-                typeof project.date === 'string' ? project.date : project.date.toDate()
-              ).toLocaleDateString()}
+              {formatDate(project.date)}
             </span>
           </div>
           
