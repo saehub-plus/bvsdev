@@ -5,7 +5,6 @@ import Hero from '../components/Hero';
 import AboutSection from '../components/AboutSection';
 import ProjectsSection from '../components/ProjectsSection';
 import { ArrowRight } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 const Index: React.FC = () => {
   return (
@@ -28,10 +27,15 @@ const Index: React.FC = () => {
               Transforme sua ideia em realidade com soluções tecnológicas de ponta.
             </p>
             
-            <Link to="/contact" className="cyber-button inline-flex items-center gap-2">
+            <a 
+              href="https://wa.link/aeshrb" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="cyber-button inline-flex items-center gap-2"
+            >
               Entre em Contato
               <ArrowRight size={16} />
-            </Link>
+            </a>
           </div>
         </div>
       </section>

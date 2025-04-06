@@ -75,7 +75,7 @@ const Hero: React.FC = () => {
             BVS Developments
           </h1>
           <h2 className="font-mono text-foreground/80 max-w-xl mb-8">
-            <span className="terminal-text inline-block animate-typing">Criando experiências digitais de alto impacto ></span>
+            <span className="terminal-text inline-block animate-typing">Criando experiências digitais de alto impacto {"> "}</span>
           </h2>
           
           <div className="flex flex-col sm:flex-row gap-4 mt-8">

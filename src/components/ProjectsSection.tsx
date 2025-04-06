@@ -1,51 +1,35 @@
 
-import React, { useState } from 'react';
-import { ExternalLink, Calendar, Code, X } from 'lucide-react';
-
-// Tipo para os projetos
-export interface Project {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  date: string;
-  technologies: string[];
-  link?: string;
-}
-
-// Dados de exemplo para os projetos
-const sampleProjects: Project[] = [
-  {
-    id: '1',
-    title: 'E-commerce Tech Store',
-    description: 'Loja virtual completa com catálogo de produtos tecnológicos, sistema de carrinho, pagamentos e área do cliente.',
-    image: '/placeholder.svg',
-    date: '2023-10-15',
-    technologies: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    link: 'https://example.com/project1'
-  },
-  {
-    id: '2',
-    title: 'Dashboard Analytics',
-    description: 'Painel administrativo com visualizações de dados em tempo real, gráficos e relatórios customizáveis para análise de métricas.',
-    image: '/placeholder.svg',
-    date: '2023-08-22',
-    technologies: ['Vue.js', 'Express', 'PostgreSQL', 'Chart.js'],
-    link: 'https://example.com/project2'
-  },
-  {
-    id: '3',
-    title: 'Task Management App',
-    description: 'Aplicativo de gerenciamento de tarefas com recursos de colaboração em equipe, notificações e acompanhamento de progresso.',
-    image: '/placeholder.svg',
-    date: '2023-06-10',
-    technologies: ['React Native', 'Firebase', 'Redux', 'TypeScript'],
-    link: 'https://example.com/project3'
-  },
-];
+import React, { useState, useEffect } from 'react';
+import { ExternalLink, Calendar, Code, X, Loader2 } from 'lucide-react';
+import { getProjects, Project } from '../lib/firebase';
+import { useToast } from "@/hooks/use-toast";
 
 const ProjectsSection: React.FC = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+  
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const fetchedProjects = await getProjects();
+        setProjects(fetchedProjects);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+        toast({
+          title: "Falha na conexão com a matriz",
+          description: "Não foi possível carregar os projetos. Tente novamente mais tarde.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchProjects();
+  }, [toast]);
   
   const openProjectDetails = (project: Project) => {
     setSelectedProject(project);
@@ -73,15 +57,34 @@ const ProjectsSection: React.FC = () => {
           <div className="h-1 w-20 bg-neon-green/50 mx-auto rounded-full mt-6"></div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {sampleProjects.map(project => (
-            <ProjectCard 
-              key={project.id} 
-              project={project} 
-              onClick={() => openProjectDetails(project)} 
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-12 h-12 text-neon-green animate-spin mb-4" />
+            <p className="text-neon-green/70 font-mono text-center">Carregando matriz de projetos...</p>
+          </div>
+        ) : projects.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {projects.map(project => (
+              <ProjectCard 
+                key={project.id} 
+                project={project} 
+                onClick={() => openProjectDetails(project)} 
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="tech-container p-16 text-center animate-pulse">
+            <div className="terminal-header border-b border-neon-green/30 mb-6 pb-2 flex items-center">
+              <div className="w-3 h-3 rounded-full bg-neon-green/70 mr-2"></div>
+              <div className="font-mono text-neon-green/70 text-sm">loading.js</div>
+            </div>
+            <p className="text-neon-green mb-4 font-display text-xl">Carregando universo de projetos...</p>
+            <p className="text-foreground/70 italic">Os códigos ainda estão se conectando às estrelas.</p>
+            <div className="mt-8 flex justify-center">
+              <div className="w-16 h-16 border-t-2 border-r-2 border-neon-green/50 rounded-full animate-spin"></div>
+            </div>
+          </div>
+        )}
       </div>
       
       {selectedProject && (
@@ -118,7 +121,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         
         <div className="relative aspect-video mb-4 overflow-hidden border border-neon-green/20">
           <img 
-            src={project.image} 
+            src={project.imageUrl || "/placeholder.svg"} 
             alt={project.title} 
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
@@ -152,7 +155,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
         <div className="mt-auto pt-3 border-t border-neon-green/20 flex justify-between items-center">
           <span className="text-xs text-foreground/50 font-mono flex items-center">
             <Calendar size={12} className="mr-1" />
-            {new Date(project.date).toLocaleDateString()}
+            {new Date(
+              typeof project.date === 'string' ? project.date : project.date.toDate()
+            ).toLocaleDateString()}
           </span>
           <button className="text-neon-green hover:text-glow text-sm font-mono">
             Ver detalhes
@@ -194,7 +199,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         
         <div className="relative aspect-video mb-6 overflow-hidden border border-neon-green/20">
           <img 
-            src={project.image} 
+            src={project.imageUrl || "/placeholder.svg"} 
             alt={project.title} 
             className="w-full h-full object-cover"
           />
@@ -207,7 +212,11 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
         <div className="flex items-center mb-6 space-x-4">
           <div className="flex items-center text-foreground/70">
             <Calendar size={16} className="mr-2 text-neon-green/70" />
-            <span>{new Date(project.date).toLocaleDateString()}</span>
+            <span>
+              {new Date(
+                typeof project.date === 'string' ? project.date : project.date.toDate()
+              ).toLocaleDateString()}
+            </span>
           </div>
           
           {project.link && (
@@ -247,12 +256,32 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
           <p className="text-foreground/80 leading-relaxed">
             {project.description}
           </p>
-          <p className="text-foreground/80 leading-relaxed mt-4">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget
-            aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl.
-            Nullam euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, eget aliquam nisl nunc eget nisl.
-          </p>
         </div>
+        
+        {project.pages && project.pages.length > 0 && (
+          <div className="mb-6">
+            <h3 className="text-xl font-mono text-neon-green/80 mb-3">
+              📄 Páginas do Projeto
+            </h3>
+            <div className="space-y-4">
+              {project.pages.map((page, index) => (
+                <div key={index} className="border border-neon-green/20 p-4 rounded-md bg-cyber-black/50">
+                  <h4 className="text-neon-green/90 font-mono mb-2">{page.name}</h4>
+                  <p className="text-foreground/70 text-sm mb-3">{page.features}</p>
+                  {page.imageUrl && (
+                    <div className="relative aspect-video overflow-hidden border border-neon-green/10 rounded">
+                      <img 
+                        src={page.imageUrl} 
+                        alt={page.name} 
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         
         <div className="flex justify-end pt-4 border-t border-neon-green/20">
           <button 

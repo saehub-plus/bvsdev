@@ -18,9 +18,8 @@ const AboutSection: React.FC = () => {
           <div className="md:w-1/3 flex justify-center">
             <div className="relative">
               <div className="w-64 h-64 rounded-full overflow-hidden border-2 border-neon-green/50 shadow-[0_0_15px_rgba(0,255,65,0.3)]">
-                {/* Substitua o src pela URL da sua foto */}
                 <img 
-                  src="/placeholder.svg" 
+                  src="/lovable-uploads/40b0c7cb-4325-4b11-81e7-a8f74ffd9221.png" 
                   alt="BVS Developer" 
                   className="w-full h-full object-cover"
                 />
@@ -46,13 +45,13 @@ const AboutSection: React.FC = () => {
                 <span className="text-neon-blue">role:</span> <span className="text-foreground">"Desenvolvedor Full Stack",</span>
               </p>
               <p className="pl-8">
-                <span className="text-neon-blue">bio:</span> <span className="text-foreground">"Criador de experiências digitais imersivas e aplicações web de alto impacto. Combinando criatividade com código para transformar ideias em realidade.",</span>
+                <span className="text-neon-blue">bio:</span> <span className="text-foreground">"Sou enfermeiro e apaixonado por tecnologia. Transformo ideias em soluções digitais que facilitam o trabalho de profissionais de saúde, melhoram a qualidade do cuidado e ao mesmo tempo me permitem expressar minha criatividade como uma pessoa neurodivergente. Meus projetos refletem esse propósito: usar a tecnologia com empatia, inteligência e inovação.",</span>
               </p>
               <p className="pl-8">
-                <span className="text-neon-blue">stack:</span> [<span className="text-foreground">"React", "Node.js", "TypeScript", "Firebase", "UI/UX Design"</span>],
+                <span className="text-neon-blue">stack:</span> [<span className="text-foreground">"React", "Node.js", "Firebase"</span>],
               </p>
               <p className="pl-8">
-                <span className="text-neon-blue">mission:</span> <span className="text-foreground">"Desenvolver soluções tecnológicas que não apenas funcionem perfeitamente, mas também impressionem visualmente."</span>
+                <span className="text-neon-blue">mission:</span> <span className="text-foreground">"Minha missão é construir soluções digitais que empoderem profissionais da saúde, simplifiquem processos e gerem impacto positivo na vida real — tudo isso com um olhar criativo e neurodivergente sobre o mundo."</span>
               </p>
               <p className="text-foreground/90">{"}"}</p>
             </div>

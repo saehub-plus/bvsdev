@@ -1,7 +1,8 @@
 
 import React, { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Home, User, Code, LogIn } from 'lucide-react';
+import { Menu, X, Home, User, Code } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,6 +11,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const location = useLocation();
+  const { currentUser, isAuthenticated } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -37,7 +39,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <NavLink to="/" active={isActive('/')} icon={<Home size={18} />} label="Home" />
             <NavLink to="/about" active={isActive('/about')} icon={<User size={18} />} label="Sobre" />
             <NavLink to="/projects" active={isActive('/projects')} icon={<Code size={18} />} label="Projetos" />
-            <NavLink to="/admin" active={isActive('/admin')} icon={<LogIn size={18} />} label="Admin" />
           </nav>
           
           {/* Mobile menu button */}
@@ -57,7 +58,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <MobileNavLink to="/" active={isActive('/')} icon={<Home size={18} />} label="Home" onClick={closeMenu} />
               <MobileNavLink to="/about" active={isActive('/about')} icon={<User size={18} />} label="Sobre" onClick={closeMenu} />
               <MobileNavLink to="/projects" active={isActive('/projects')} icon={<Code size={18} />} label="Projetos" onClick={closeMenu} />
-              <MobileNavLink to="/admin" active={isActive('/admin')} icon={<LogIn size={18} />} label="Admin" onClick={closeMenu} />
             </nav>
           </div>
         )}
