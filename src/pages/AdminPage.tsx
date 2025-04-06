@@ -162,7 +162,7 @@ const AdminPage: React.FC = () => {
             const { imageFile, ...rest } = page;
             return { ...rest, imageUrl: pageImageUrl };
           }
-          return page;
+          return page; 
         })
       );
 
